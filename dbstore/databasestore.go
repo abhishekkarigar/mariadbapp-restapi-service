@@ -3,6 +3,7 @@ package dbstore
 import (
 	"fmt"
 	"github.com/jinzhu/gorm"
+	"log"
 	"mariadb-service/config"
 	"mariadb-service/domain"
 )
@@ -25,6 +26,10 @@ func NewGormDatabase(appconfig *config.AppConfig) *gormDatabase {
 	gormdb, err := gorm.Open("mysql", c.FormatDSN())
 	if err != nil {
 		return nil
+	}
+	errors := gormdb.AutoMigrate(&domain.User{}).Error
+	if errors != nil {
+		log.Println(errors.Error())
 	}
 	return &gormDatabase{
 		Db: gormdb,

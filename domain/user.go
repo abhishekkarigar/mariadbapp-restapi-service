@@ -1,9 +1,12 @@
 package domain
 
+import "github.com/jinzhu/gorm"
+
 type User struct {
-	Id    string `gorm:"primary_key"`
+	gorm.Model
+	Id    int
 	Name  string
-	Email string `gorm:"unique;not null"`
+	Email string
 }
 type UserStore interface {
 	GetAll() ([]User, error)

@@ -3,13 +3,16 @@ package controller
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/Shopify/sarama"
 	"github.com/gorilla/mux"
 	"mariadb-service/domain"
+	kafkaservice "mariadb-service/kafka-service"
 	"net/http"
 )
 
 type UserController struct {
-	Db domain.UserStore
+	Db       domain.UserStore
+	Producer sarama.SyncProducer
 }
 
 func (user *UserController) GetUsers(w http.ResponseWriter, r *http.Request) {
@@ -39,6 +42,7 @@ func (user *UserController) Post(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("duplicate email"))
 		return
 	}
+	kafkaservice.Publish("new record added succesfully", user.Producer)
 	w.Write([]byte("record added successfully"))
 }
 
@@ -54,6 +58,7 @@ func (user *UserController) Delete(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		return
 	}
+	kafkaservice.Publish("record deleted succesfully", user.Producer)
 	w.Write([]byte("record deleted successfully"))
 }
 
