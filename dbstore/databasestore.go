@@ -42,19 +42,13 @@ func (g *gormDatabase) GetAll() ([]domain.User, error) {
 
 func (g *gormDatabase) CreateUser(user domain.User) error {
 	//err := g.Db.Model(&domain.User{}).Create(&user).Error
-<<<<<<< HEAD
-	err := g.Db.Model(&user).Create(&user).Error
-=======
 	//err := g.Db.Model(&user).Create(&user).Error
 	err := g.Db.Create(&user).Error
->>>>>>> 11ef93d (first commit)
 	if err != nil {
 		return err
 	}
 	return nil
 }
-<<<<<<< HEAD
-=======
 
 func (g *gormDatabase) DeleteUser(email string) error {
 	var user domain.User
@@ -79,4 +73,3 @@ func (g *gormDatabase) GetUser(user domain.User, email string) (domain.User, err
 	}
 	return user1, nil
 }
->>>>>>> 11ef93d (first commit)
